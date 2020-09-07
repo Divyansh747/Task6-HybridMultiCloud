@@ -16,3 +16,41 @@ resource "aws_db_instance" "rds" {
   publicly_accessible  = "true"
   port                 = "3306"
 }
+
+resource "kubernetes_deployment" "wordpress" {
+depends_on = [aws_db_instance.rds]
+  metadata {
+    name = "wordpress"
+    labels = {
+      App = "wordpress"
+    }
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        App = "wordpress"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          App = "wordpress"
+        }
+      }
+      spec {
+        container {
+          image = "wordpress"
+          name  = "wordpress"
+
+          port {
+            container_port = 80
+          }
+        }
+      }
+    }
+  }
+}
+
+                                                              36,1          36%
+
