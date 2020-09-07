@@ -52,5 +52,22 @@ depends_on = [aws_db_instance.rds]
   }
 }
 
-                                                              36,1          36%
+resource "kubernetes_service" "wordpress" {
+  metadata {
+    name = "wordpress"
+  }
+  spec {
+    selector = {
+      App = kubernetes_deployment.wordpress.spec.0.template.0.metadata[0].labels.App
+    }
+    port {
+      port        = 80
+      target_port = 80
+      node_port   = 30000
+    }
+
+    type = "NodePort"
+  }
+}
+                                                                 36,1          36%
 
