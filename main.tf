@@ -69,5 +69,3 @@ resource "kubernetes_service" "wordpress" {
     type = "NodePort"
   }
 }
-                                                                 36,1          36%
-
